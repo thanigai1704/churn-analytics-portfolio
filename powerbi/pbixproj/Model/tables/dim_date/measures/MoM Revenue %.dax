@@ -1,0 +1,3 @@
+VAR Cur = [Total Revenue]
+VAR Prev = CALCULATE([Total Revenue], PREVIOUSMONTH(dim_date[Date]))
+RETURN DIVIDE(Cur - Prev, Prev, 0)

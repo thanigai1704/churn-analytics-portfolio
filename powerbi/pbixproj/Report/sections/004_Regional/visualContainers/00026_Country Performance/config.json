@@ -1,0 +1,120 @@
+{
+  "name": "00000000001a",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 760,
+        "y": 175,
+        "z": 25000,
+        "width": 480,
+        "height": 460
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "table",
+    "projections": {
+      "Columns": [
+        {
+          "queryRef": "dim_country.Country",
+          "active": true
+        },
+        {
+          "queryRef": "fact_sales.Customers by Country"
+        },
+        {
+          "queryRef": "fact_sales.Total Revenue"
+        },
+        {
+          "queryRef": "fact_sales.Avg Order Value (Country)"
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "f",
+          "Entity": "fact_sales",
+          "Type": 0
+        },
+        {
+          "Name": "co",
+          "Entity": "dim_country",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "co"
+              }
+            },
+            "Property": "Country"
+          },
+          "Name": "dim_country.Country"
+        },
+        {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "f"
+              }
+            },
+            "Property": "Customers by Country"
+          },
+          "Name": "fact_sales.Customers by Country"
+        },
+        {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "f"
+              }
+            },
+            "Property": "Total Revenue"
+          },
+          "Name": "fact_sales.Total Revenue"
+        },
+        {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "f"
+              }
+            },
+            "Property": "Avg Order Value (Country)"
+          },
+          "Name": "fact_sales.Avg Order Value (Country)"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "hasDefaultSort": true,
+    "vcObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Country Performance'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

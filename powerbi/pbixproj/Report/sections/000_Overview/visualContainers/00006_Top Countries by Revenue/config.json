@@ -1,0 +1,109 @@
+{
+  "name": "000000000006",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 670,
+        "y": 175,
+        "z": 5000,
+        "width": 570,
+        "height": 460
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "clusteredColumnChart",
+    "projections": {
+      "Category": [
+        {
+          "queryRef": "dim_country.Country",
+          "active": true
+        }
+      ],
+      "Y": [
+        {
+          "queryRef": "fact_sales.Total Revenue"
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "f",
+          "Entity": "fact_sales",
+          "Type": 0
+        },
+        {
+          "Name": "co",
+          "Entity": "dim_country",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "f"
+              }
+            },
+            "Property": "Total Revenue"
+          },
+          "Name": "fact_sales.Total Revenue"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "co"
+              }
+            },
+            "Property": "Country"
+          },
+          "Name": "dim_country.Country"
+        }
+      ],
+      "OrderBy": [
+        {
+          "Direction": 2,
+          "Expression": {
+            "Measure": {
+              "Expression": {
+                "SourceRef": {
+                  "Source": "f"
+                }
+              },
+              "Property": "Total Revenue"
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "hasDefaultSort": true,
+    "vcObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top Countries by Revenue'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

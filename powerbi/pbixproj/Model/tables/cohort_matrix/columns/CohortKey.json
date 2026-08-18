@@ -1,0 +1,5 @@
+{
+  "name": "CohortKey",
+  "dataType": "int64",
+  "sourceColumn": "CohortKey"
+}

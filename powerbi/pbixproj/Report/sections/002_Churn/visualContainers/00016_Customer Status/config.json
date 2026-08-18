@@ -1,0 +1,89 @@
+{
+  "name": "000000000010",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 840,
+        "y": 175,
+        "z": 15000,
+        "width": 400,
+        "height": 460
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "donutChart",
+    "projections": {
+      "Category": [
+        {
+          "queryRef": "dim_customer.CustomerStatus",
+          "active": true
+        }
+      ],
+      "Values": [
+        {
+          "queryRef": "dim_customer.% Customers by Status"
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "c",
+          "Entity": "dim_customer",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "% Customers by Status"
+          },
+          "Name": "dim_customer.% Customers by Status"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "CustomerStatus"
+          },
+          "Name": "dim_customer.CustomerStatus"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "hasDefaultSort": true,
+    "vcObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Customer Status'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

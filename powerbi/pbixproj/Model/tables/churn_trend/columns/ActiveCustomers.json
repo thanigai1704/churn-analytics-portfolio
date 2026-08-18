@@ -1,0 +1,5 @@
+{
+  "name": "ActiveCustomers",
+  "dataType": "int64",
+  "sourceColumn": "ActiveCustomers"
+}

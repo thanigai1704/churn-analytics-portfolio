@@ -1,0 +1,4 @@
+CALCULATE(
+AVERAGE(cohort_matrix[RetentionPct]),
+cohort_matrix[Elapsed] = 1
+)

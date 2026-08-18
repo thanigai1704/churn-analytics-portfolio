@@ -1,0 +1,38 @@
+Country,Customers,Revenue,Orders,Region
+Australia,9,138521.31,57,Rest of World
+Austria,11,10198.68,17,Europe
+Bahrain,2,548.4,2,Rest of World
+Belgium,25,41196.34,98,Europe
+Brazil,1,1143.6,1,Rest of World
+Canada,4,3666.38,6,Rest of World
+Channel Islands,9,20450.44,26,Europe
+Cyprus,8,13590.38,16,Europe
+Czech Republic,1,826.74,2,Europe
+Denmark,9,18955.34,18,Europe
+EIRE,3,265545.9,260,Rest of World
+European Community,1,1300.25,4,Rest of World
+Finland,12,22546.08,41,Europe
+France,87,209024.05,389,Europe
+Germany,94,228867.14,457,Europe
+Greece,4,4760.52,5,Europe
+Iceland,1,4310.0,7,Europe
+Israel,3,7221.69,5,Rest of World
+Italy,14,17483.24,38,Europe
+Japan,8,37416.369999999995,19,Rest of World
+Lebanon,1,1693.88,1,Rest of World
+Lithuania,1,1661.06,4,Europe
+Malta,2,2725.59,5,Europe
+Netherlands,9,285446.34,94,Europe
+Norway,10,36165.44,36,Europe
+Poland,6,7334.65,19,Europe
+Portugal,19,33439.89,57,Europe
+RSA,1,1002.3100000000001,1,Europe
+Saudi Arabia,1,145.92,1,Rest of World
+Singapore,1,21279.29,7,Rest of World
+Spain,30,61577.11,90,Europe
+Sweden,8,38378.33,36,Europe
+Switzerland,21,56443.95,51,Europe
+USA,4,3580.39,5,Rest of World
+United Arab Emirates,2,1902.28,3,Rest of World
+United Kingdom,3920,7308391.5540000005,16646,Domestic (UK)
+Unspecified,4,2667.07,8,Rest of World

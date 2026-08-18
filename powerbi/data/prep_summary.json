@@ -1,0 +1,16 @@
+{
+  "source_rows": 541909,
+  "clean_rows": 397884,
+  "customers": 4338,
+  "countries": 37,
+  "revenue_gbp": 8911407.9,
+  "repeat_rate_pct": 65.5,
+  "avg_ltv_gbp": 2054.27,
+  "segments": {
+    "Champions": 980,
+    "Loyal": 946,
+    "Potential Loyalists": 578,
+    "At Risk": 299,
+    "Lost": 1535
+  }
+}

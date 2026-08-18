@@ -1,0 +1,12 @@
+{
+  "name": "cohort_matrix",
+  "partitions": [
+    {
+      "name": "cohort_matrix",
+      "mode": "import",
+      "source": {
+        "type": "m"
+      }
+    }
+  ]
+}

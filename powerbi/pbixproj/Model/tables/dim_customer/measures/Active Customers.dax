@@ -1,0 +1,1 @@
+CALCULATE(COUNTROWS(dim_customer), dim_customer[RecencyDays] <= 180, REMOVEFILTERS(dim_date))

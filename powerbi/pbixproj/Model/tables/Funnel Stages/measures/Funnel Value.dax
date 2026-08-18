@@ -1,0 +1,9 @@
+SWITCH(
+MAX('Funnel Stages'[Stage]),
+"First Purchase", 100,
+"Repeat Purchase", [Funnel Repeat Purchase %],
+"3+ Orders", [Funnel 3+ Orders %],
+"5+ Orders", [Funnel 5+ Orders %],
+"8+ Orders (Advocates)", [Funnel 8+ Orders %],
+BLANK()
+)

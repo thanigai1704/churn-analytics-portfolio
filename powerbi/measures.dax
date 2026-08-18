@@ -1,0 +1,276 @@
+// =============================================================================
+//  Customer Retention & Churn Analytics — DAX Measures
+//  Data: UCI Online Retail (real e-commerce transactions, Dec 2010 - Dec 2011)
+//  Source: powerbi/data/*.csv  |  Build steps: BUILD-GUIDE.md
+//
+//  Table prefix: none (all measures live in a dedicated "Measures" table).
+//  How to add: Model view > right pane > "Measure table" (2024+) or
+//  right-click any table > New measure, then set the measure's Home Table
+//  to "Measures" in the measure tool pane.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// 1. CORE KPI
+// -----------------------------------------------------------------------------
+
+// Total Revenue (GBP). Format: £ 0.00
+Total Revenue = SUM(fact_sales[Revenue])
+
+// Number of invoices / orders. Each InvoiceNo is one checkout.
+Total Orders = DISTINCTCOUNT(fact_sales[InvoiceNo])
+
+// Distinct customers present in the current filter context.
+Total Customers = DISTINCTCOUNT(fact_sales[CustomerID])
+
+// All customers ever (date-filter resistant) — for segment composition.
+All-Time Customers = CALCULATE(COUNTROWS(dim_customer), REMOVEFILTERS(dim_date))
+
+// Average revenue per order.
+Avg Order Value = DIVIDE([Total Revenue], [Total Orders])
+
+// Revenue per customer.
+Revenue per Customer = DIVIDE([Total Revenue], [Total Customers])
+
+// Average lifetime value across all customers.
+Avg LTV = AVERAGE(dim_customer[LTV_GBP])
+
+// Repeat buyers = customers with 2+ distinct purchase dates.
+Repeat Purchase Rate % =
+VAR AllCust = [All-Time Customers]
+VAR Repeat = CALCULATE(COUNTROWS(dim_customer), dim_customer[OrderSessions] >= 2, REMOVEFILTERS(dim_date))
+RETURN DIVIDE(Repeat, AllCust, 0) * 100
+
+One-Time Rate % = 100 - [Repeat Purchase Rate %]
+
+// Customers whose last purchase was within 180 days of the snapshot.
+Active Customers =
+CALCULATE(COUNTROWS(dim_customer), dim_customer[RecencyDays] <= 180, REMOVEFILTERS(dim_date))
+
+// Customers inactive 180+ days (snapshot = 2011-12-09).
+Churned Customers =
+CALCULATE(COUNTROWS(dim_customer), dim_customer[RecencyDays] > 180, REMOVEFILTERS(dim_date))
+
+// Snapshot churn share (matches site's current churn context).
+Churn Rate % (Snapshot) = DIVIDE([Churned Customers], [All-Time Customers], 0) * 100
+
+// Customers acquired in the selected month(s) (first purchase in period).
+New Customers =
+CALCULATE(COUNTROWS(dim_customer), TREATAS(VALUES(dim_date[MonthKey]), dim_customer[FirstMonthKey]))
+
+// -----------------------------------------------------------------------------
+// 2. TIME INTELLIGENCE
+// -----------------------------------------------------------------------------
+
+// Revenue vs previous calendar month.
+MoM Revenue % =
+VAR Cur = [Total Revenue]
+VAR Prev = CALCULATE([Total Revenue], PREVIOUSMONTH(dim_date[Date]))
+RETURN DIVIDE(Cur - Prev, Prev, 0)
+
+// Revenue vs same month last year (n/a before Dec 2011 — sample demonstrates pattern).
+YoY Revenue % =
+VAR Cur = [Total Revenue]
+VAR Prev = CALCULATE([Total Revenue], SAMEPERIODLASTYEAR(dim_date[Date]))
+RETURN DIVIDE(Cur - Prev, Prev, 0)
+
+// Year-to-date revenue up to the max selected date.
+YTD Revenue = TOTALYTD([Total Revenue], dim_date[Date])
+
+// Cumulative customers acquired over time (running total of new buyers).
+Cumulative Customers =
+CALCULATE(
+    [New Customers],
+    FILTER(ALL(dim_date), dim_date[Date] <= MAX(dim_date[Date]))
+)
+
+// -----------------------------------------------------------------------------
+// 3. COHORT RETENTION  (uses pre-computed cohort_matrix.csv)
+// -----------------------------------------------------------------------------
+// Matrix visual: Rows = Cohort | Columns = ElapsedLabel | Values = Cohort Retention (Customers).
+// Because each Cohort+Elapsed pair is unique, MAX works as "the value".
+
+// Retention % for the currently-selected cohort cell.
+Cohort Retention (Customers) = MAX(cohort_matrix[Customers])
+
+// Retention % for the currently-selected cohort cell.
+Cohort Retention % = MAX(cohort_matrix[RetentionPct])
+
+// Average M1 retention across cohorts (shows the Month-1 cliff).
+Avg M1 Retention % =
+CALCULATE(
+    AVERAGE(cohort_matrix[RetentionPct]),
+    cohort_matrix[Elapsed] = 1
+)
+
+// % of customers still active after one month, across all complete cohorts.
+Avg M1 Drop-off % = 100 - [Avg M1 Retention %]
+
+// Average retention across cohorts, by months-since-first-purchase (retention curve).
+Avg Retention by Elapsed % = AVERAGE(cohort_matrix[RetentionPct])
+
+// -----------------------------------------------------------------------------
+// 4. CHURN (uses pre-computed churn_trend.csv)
+// -----------------------------------------------------------------------------
+// Line chart: Axis = Month (churn_trend) | Values = Churn Rate (Trend).
+
+// Churn % of active customers who did not buy again the following month.
+Churn Rate (Trend) = MAX(churn_trend[ChurnRatePct])
+
+// Current (latest) month's churn rate.
+Current Churn Rate % =
+VAR Latest = MAXX(churn_trend, churn_trend[MonthKey])
+RETURN CALCULATE(MAX(churn_trend[ChurnRatePct]), churn_trend[MonthKey] = Latest)
+
+// Average monthly churn across all complete months.
+Avg Monthly Churn % = AVERAGE(churn_trend[ChurnRatePct])
+
+// ---------------------------------------------------------------- advanced:
+// Dynamic monthly churn directly from the transaction fact (no pre-computed table).
+// Validates you can derive churn yourself in an interview.
+Churn Rate (Dynamic) % =
+VAR CurMonth = MAX(fact_sales[MonthKey])
+VAR ActiveCur = CALCULATE(DISTINCTCOUNT(fact_sales[CustomerID]), fact_sales[MonthKey] = CurMonth)
+VAR ActiveNext = CALCULATE(DISTINCTCOUNT(fact_sales[CustomerID]), fact_sales[MonthKey] = CurMonth + 1)
+VAR Churned = ActiveCur - ActiveNext
+RETURN DIVIDE(Churned, ActiveCur, 0) * 100
+
+// -----------------------------------------------------------------------------
+// 5. RFM SEGMENTATION
+// -----------------------------------------------------------------------------
+
+// Customers by RFM segment (axis = dim_customer[RFM_Segment]).
+Customers by Segment = COUNTROWS(dim_customer)
+
+// Share of total customers per segment.
+% Customers by Segment = DIVIDE(COUNTROWS(dim_customer), [All-Time Customers], 0) * 100
+
+// Average orders per customer in the segment.
+Avg Orders by Segment = AVERAGE(dim_customer[OrderSessions])
+
+// Average LTV per segment.
+Avg LTV by Segment = AVERAGE(dim_customer[LTV_GBP])
+
+// Revenue contributed by each segment (cross-filter from customer to fact).
+Revenue by Segment = CALCULATE([Total Revenue], dim_customer[RFM_Segment])
+
+// Revenue share per segment.
+% Revenue by Segment =
+DIVIDE(
+    CALCULATE([Total Revenue], dim_customer[RFM_Segment]),
+    CALCULATE([Total Revenue], REMOVEFILTERS(dim_customer)),
+    0
+) * 100
+
+// Customer status (Active vs Churned) share.
+% Customers by Status =
+DIVIDE(COUNTROWS(dim_customer), [All-Time Customers], 0) * 100
+
+// -----------------------------------------------------------------------------
+// 6. LTV & REVENUE CONCENTRATION
+// -----------------------------------------------------------------------------
+
+// Average LTV of repeat (2+) buyers.
+Avg LTV (Repeat) =
+CALCULATE(AVERAGE(dim_customer[LTV_GBP]), dim_customer[OrderSessions] >= 2, REMOVEFILTERS(dim_date))
+
+// Average LTV of one-time buyers.
+Avg LTV (One-Time) =
+CALCULATE(AVERAGE(dim_customer[LTV_GBP]), dim_customer[OrderSessions] = 1, REMOVEFILTERS(dim_date))
+
+// How many x a repeat buyer is worth vs a one-time buyer (~7x in this data).
+LTV Multiple = DIVIDE([Avg LTV (Repeat)], [Avg LTV (One-Time)], 0)
+
+// Share of LTV held by the top 20% of customers by LTV (~75% in this data).
+Top 20% LTV Share =
+VAR TotalCust = COUNTROWS(dim_customer)
+VAR Cutoff = ROUND(TotalCust * 0.2, 0)
+VAR TopCust = SELECTCOLUMNS(
+    TOPN(Cutoff, dim_customer, dim_customer[LTV_GBP], DESC),
+    "cid", dim_customer[CustomerID]
+)
+VAR RevTop = CALCULATE(SUM(dim_customer[LTV_GBP]), KEEPFILTERS(TopCust))
+RETURN DIVIDE(RevTop, SUM(dim_customer[LTV_GBP]), 0) * 100
+
+// -----------------------------------------------------------------------------
+// 7. PRODUCT
+// -----------------------------------------------------------------------------
+
+Total Units Sold = SUM(fact_sales[Quantity])
+
+// Revenue share of the products currently on screen.
+% of Revenue (Product) =
+DIVIDE(
+    [Total Revenue],
+    CALCULATE([Total Revenue], REMOVEFILTERS(dim_product)),
+    0
+) * 100
+
+// -----------------------------------------------------------------------------
+// 8. COUNTRY / REGION
+// -----------------------------------------------------------------------------
+
+Customers by Country = DISTINCTCOUNT(fact_sales[CustomerID])
+
+// Average order value, per country (map tooltip).
+Avg Order Value (Country) =
+DIVIDE(
+    CALCULATE([Total Revenue]),
+    CALCULATE([Total Orders])
+)
+
+// Revenue share per region (Domestic UK vs Europe vs Rest of World).
+% Revenue by Region =
+DIVIDE(
+    [Total Revenue],
+    CALCULATE([Total Revenue], REMOVEFILTERS(dim_country)),
+    0
+) * 100
+
+// -----------------------------------------------------------------------------
+// 9. CUSTOMER JOURNEY FUNNEL
+// -----------------------------------------------------------------------------
+
+// % of all customers who reached each milestone (from pre-computed dim_customer).
+Funnel First Purchase % = 100
+Funnel Repeat Purchase % =
+DIVIDE(CALCULATE(COUNTROWS(dim_customer), dim_customer[OrderSessions] >= 2, REMOVEFILTERS(dim_date)), [All-Time Customers], 0) * 100
+Funnel 3+ Orders % =
+DIVIDE(CALCULATE(COUNTROWS(dim_customer), dim_customer[OrderSessions] >= 3, REMOVEFILTERS(dim_date)), [All-Time Customers], 0) * 100
+Funnel 5+ Orders % =
+DIVIDE(CALCULATE(COUNTROWS(dim_customer), dim_customer[OrderSessions] >= 5, REMOVEFILTERS(dim_date)), [All-Time Customers], 0) * 100
+Funnel 8+ Orders % =
+DIVIDE(CALCULATE(COUNTROWS(dim_customer), dim_customer[OrderSessions] >= 8, REMOVEFILTERS(dim_date)), [All-Time Customers], 0) * 100
+
+// Disconnected stage table so the native Funnel visual has an axis.
+Funnel Stages =
+DATATABLE(
+    "Stage", STRING,
+    "Sort", INTEGER,
+    {
+        { "First Purchase", 1 },
+        { "Repeat Purchase", 2 },
+        { "3+ Orders", 3 },
+        { "5+ Orders", 4 },
+        { "8+ Orders (Advocates)", 5 }
+    }
+)
+
+// One measure evaluated per stage — use as the funnel visual's Value.
+Funnel Value =
+SWITCH(
+    MAX('Funnel Stages'[Stage]),
+    "First Purchase", 100,
+    "Repeat Purchase", [Funnel Repeat Purchase %],
+    "3+ Orders", [Funnel 3+ Orders %],
+    "5+ Orders", [Funnel 5+ Orders %],
+    "8+ Orders (Advocates)", [Funnel 8+ Orders %],
+    BLANK()
+)
+
+// Risk distribution (recency-based): Low <=60d, Medium 61-180d, High >180d.
+% Low Risk Customers =
+DIVIDE(CALCULATE(COUNTROWS(dim_customer), dim_customer[RecencyDays] <= 60, REMOVEFILTERS(dim_date)), [All-Time Customers], 0) * 100
+% Medium Risk Customers =
+DIVIDE(CALCULATE(COUNTROWS(dim_customer), dim_customer[RecencyDays] > 60 && dim_customer[RecencyDays] <= 180, REMOVEFILTERS(dim_date)), [All-Time Customers], 0) * 100
+% High Risk Customers =
+DIVIDE(CALCULATE(COUNTROWS(dim_customer), dim_customer[RecencyDays] > 180, REMOVEFILTERS(dim_date)), [All-Time Customers], 0) * 100

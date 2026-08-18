@@ -1,0 +1,5 @@
+{
+  "name": "FrequencyBucket",
+  "dataType": "string",
+  "sourceColumn": "FrequencyBucket"
+}

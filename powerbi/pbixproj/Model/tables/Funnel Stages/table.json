@@ -1,0 +1,13 @@
+{
+  "name": "Funnel Stages",
+  "partitions": [
+    {
+      "name": "Funnel Stages",
+      "mode": "import",
+      "source": {
+        "type": "calculated",
+        "expression": "DATATABLE(\n    \"Stage\", STRING,\n    \"Sort\", INTEGER,\n    {\n        { \"First Purchase\", 1 },\n        { \"Repeat Purchase\", 2 },\n        { \"3+ Orders\", 3 },\n        { \"5+ Orders\", 4 },\n        { \"8+ Orders (Advocates)\", 5 }\n    }\n)"
+      }
+    }
+  ]
+}

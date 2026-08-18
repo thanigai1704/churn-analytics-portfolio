@@ -1,0 +1,5 @@
+{
+  "name": "RFM_Segment",
+  "dataType": "string",
+  "sourceColumn": "RFM_Segment"
+}

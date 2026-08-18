@@ -1,0 +1,5 @@
+{
+  "name": "Revenue",
+  "dataType": "double",
+  "sourceColumn": "Revenue"
+}

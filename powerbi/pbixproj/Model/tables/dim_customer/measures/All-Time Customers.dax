@@ -1,0 +1,1 @@
+CALCULATE(COUNTROWS(dim_customer), REMOVEFILTERS(dim_date))

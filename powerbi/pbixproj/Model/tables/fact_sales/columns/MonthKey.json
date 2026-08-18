@@ -1,0 +1,5 @@
+{
+  "name": "MonthKey",
+  "dataType": "int64",
+  "sourceColumn": "MonthKey"
+}

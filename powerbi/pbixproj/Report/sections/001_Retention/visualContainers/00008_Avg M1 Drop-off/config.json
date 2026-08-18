@@ -1,0 +1,72 @@
+{
+  "name": "000000000008",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 345,
+        "y": 50,
+        "z": 7000,
+        "width": 290,
+        "height": 100
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "card",
+    "projections": {
+      "Values": [
+        {
+          "queryRef": "cohort_matrix.Avg M1 Drop-off %"
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "cm",
+          "Entity": "cohort_matrix",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "cm"
+              }
+            },
+            "Property": "Avg M1 Drop-off %"
+          },
+          "Name": "cohort_matrix.Avg M1 Drop-off %"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "hasDefaultSort": true,
+    "vcObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Avg M1 Drop-off'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

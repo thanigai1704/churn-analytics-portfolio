@@ -1,0 +1,4 @@
+DIVIDE(
+CALCULATE([Total Revenue]),
+CALCULATE([Total Orders])
+)

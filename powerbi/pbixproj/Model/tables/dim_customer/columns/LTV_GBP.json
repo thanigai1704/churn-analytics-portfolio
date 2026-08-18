@@ -1,0 +1,5 @@
+{
+  "name": "LTV_GBP",
+  "dataType": "double",
+  "sourceColumn": "LTV_GBP"
+}

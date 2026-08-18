@@ -1,0 +1,5 @@
+DIVIDE(
+[Total Revenue],
+CALCULATE([Total Revenue], REMOVEFILTERS(dim_product)),
+0
+) * 100

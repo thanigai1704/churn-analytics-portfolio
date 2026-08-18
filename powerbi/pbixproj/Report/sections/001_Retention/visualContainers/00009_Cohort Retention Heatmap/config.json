@@ -1,0 +1,106 @@
+{
+  "name": "000000000009",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 40,
+        "y": 175,
+        "z": 8000,
+        "width": 800,
+        "height": 460
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "pivotTable",
+    "projections": {
+      "Rows": [
+        {
+          "queryRef": "cohort_matrix.Cohort",
+          "active": true
+        }
+      ],
+      "Columns": [
+        {
+          "queryRef": "cohort_matrix.ElapsedLabel",
+          "active": true
+        }
+      ],
+      "Values": [
+        {
+          "queryRef": "cohort_matrix.Cohort Retention %"
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "cm",
+          "Entity": "cohort_matrix",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "cm"
+              }
+            },
+            "Property": "Cohort Retention %"
+          },
+          "Name": "cohort_matrix.Cohort Retention %"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "cm"
+              }
+            },
+            "Property": "Cohort"
+          },
+          "Name": "cohort_matrix.Cohort"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "cm"
+              }
+            },
+            "Property": "ElapsedLabel"
+          },
+          "Name": "cohort_matrix.ElapsedLabel"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "hasDefaultSort": true,
+    "vcObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Cohort Retention Heatmap'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

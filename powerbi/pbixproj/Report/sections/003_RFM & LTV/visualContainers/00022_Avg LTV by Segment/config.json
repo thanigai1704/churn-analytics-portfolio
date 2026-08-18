@@ -1,0 +1,89 @@
+{
+  "name": "000000000016",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 440,
+        "y": 175,
+        "z": 21000,
+        "width": 380,
+        "height": 460
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "clusteredColumnChart",
+    "projections": {
+      "Category": [
+        {
+          "queryRef": "dim_customer.RFM_Segment",
+          "active": true
+        }
+      ],
+      "Y": [
+        {
+          "queryRef": "dim_customer.Avg LTV by Segment"
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "c",
+          "Entity": "dim_customer",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Avg LTV by Segment"
+          },
+          "Name": "dim_customer.Avg LTV by Segment"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "RFM_Segment"
+          },
+          "Name": "dim_customer.RFM_Segment"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "hasDefaultSort": true,
+    "vcObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Avg LTV by Segment'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

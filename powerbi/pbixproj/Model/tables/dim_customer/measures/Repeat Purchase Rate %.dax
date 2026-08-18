@@ -1,0 +1,3 @@
+VAR AllCust = [All-Time Customers]
+VAR Repeat = CALCULATE(COUNTROWS(dim_customer), dim_customer[OrderSessions] >= 2, REMOVEFILTERS(dim_date))
+RETURN DIVIDE(Repeat, AllCust, 0) * 100

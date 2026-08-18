@@ -1,0 +1,2 @@
+VAR Latest = MAXX(churn_trend, churn_trend[MonthKey])
+RETURN CALCULATE(MAX(churn_trend[ChurnRatePct]), churn_trend[MonthKey] = Latest)

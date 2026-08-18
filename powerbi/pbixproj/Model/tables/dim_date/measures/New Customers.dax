@@ -1,0 +1,1 @@
+CALCULATE(COUNTROWS(dim_customer), TREATAS(VALUES(dim_date[MonthKey]), dim_customer[FirstMonthKey]))

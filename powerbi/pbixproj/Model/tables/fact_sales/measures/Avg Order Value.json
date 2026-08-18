@@ -1,0 +1,4 @@
+{
+  "name": "Avg Order Value",
+  "formatString": "\u00a3#,##0.00"
+}

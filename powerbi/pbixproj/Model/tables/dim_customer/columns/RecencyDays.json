@@ -1,0 +1,5 @@
+{
+  "name": "RecencyDays",
+  "dataType": "int64",
+  "sourceColumn": "RecencyDays"
+}

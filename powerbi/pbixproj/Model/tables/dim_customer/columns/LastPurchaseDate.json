@@ -1,0 +1,5 @@
+{
+  "name": "LastPurchaseDate",
+  "dataType": "dateTime",
+  "sourceColumn": "LastPurchaseDate"
+}

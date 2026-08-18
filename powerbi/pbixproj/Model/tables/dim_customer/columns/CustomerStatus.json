@@ -1,0 +1,5 @@
+{
+  "name": "CustomerStatus",
+  "dataType": "string",
+  "sourceColumn": "CustomerStatus"
+}

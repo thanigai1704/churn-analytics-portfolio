@@ -1,0 +1,12 @@
+{
+  "name": "dim_date",
+  "partitions": [
+    {
+      "name": "dim_date",
+      "mode": "import",
+      "source": {
+        "type": "m"
+      }
+    }
+  ]
+}

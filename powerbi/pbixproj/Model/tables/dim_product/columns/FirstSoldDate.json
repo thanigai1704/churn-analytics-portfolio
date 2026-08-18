@@ -1,0 +1,5 @@
+{
+  "name": "FirstSoldDate",
+  "dataType": "dateTime",
+  "sourceColumn": "FirstSoldDate"
+}

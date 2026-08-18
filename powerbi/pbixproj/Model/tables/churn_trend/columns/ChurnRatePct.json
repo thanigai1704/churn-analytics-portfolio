@@ -1,0 +1,5 @@
+{
+  "name": "ChurnRatePct",
+  "dataType": "double",
+  "sourceColumn": "ChurnRatePct"
+}

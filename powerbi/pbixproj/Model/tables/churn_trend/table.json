@@ -1,0 +1,12 @@
+{
+  "name": "churn_trend",
+  "partitions": [
+    {
+      "name": "churn_trend",
+      "mode": "import",
+      "source": {
+        "type": "m"
+      }
+    }
+  ]
+}

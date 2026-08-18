@@ -1,0 +1,641 @@
+{
+  "source": {
+    "name": "UCI Online Retail Dataset",
+    "url": "https://archive.ics.uci.edu/ml/datasets/Online+Retail",
+    "period": "Dec 2010 - Dec 2011",
+    "rows": 541909,
+    "cleanRows": 397884,
+    "customers": 4338,
+    "countries": 37,
+    "snapshot": "2011-12-09",
+    "currency": "GBP"
+  },
+  "dataQuality": {
+    "rows": 541909,
+    "cleanRows": 397884,
+    "cleanPct": 73.4
+  },
+  "metrics": {
+    "totalCustomers": 4338,
+    "totalRevenue": 8911407.9,
+    "retentionRate": 21.5,
+    "churnRate": 54.4,
+    "avgLtv": 2054.27,
+    "repeatPurchaseRate": 65.5,
+    "oneTimeRate": 34.5,
+    "m1Retention": 21.5,
+    "m2Retention": 23.2,
+    "m3Retention": 24.6,
+    "m1Dropoff": 78.5,
+    "avgLtvRepeat": 2916.55,
+    "avgLtvOnce": 414.48,
+    "ltvMultiple": 7.0,
+    "top20RevShare": 74.6,
+    "avgMonthlyChurn": 60.8
+  },
+  "deltas": {
+    "customers": {
+      "value": -40.4,
+      "positive": false,
+      "note": "H2 vs H1 acquisition"
+    },
+    "retention": {
+      "value": -1.4,
+      "positive": false,
+      "note": "recent cohorts"
+    },
+    "churn": {
+      "value": 9.0,
+      "positive": true,
+      "note": "YTD reduction"
+    },
+    "ltv": {
+      "value": 7.0,
+      "positive": true,
+      "note": "vs one-time buyers"
+    },
+    "repeat": {
+      "value": 70.7,
+      "positive": true,
+      "note": "of repeat buyers reach 3+"
+    }
+  },
+  "cohortMonths": [
+    "Dec",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov"
+  ],
+  "cohortMatrix": [
+    [
+      100.0,
+      36.6,
+      32.3,
+      38.4,
+      36.3,
+      39.8,
+      36.3,
+      34.9,
+      35.4,
+      39.5,
+      37.4,
+      50.3
+    ],
+    [
+      100.0,
+      22.1,
+      26.6,
+      23.0,
+      32.1,
+      28.8,
+      24.7,
+      24.2,
+      30.0,
+      32.6,
+      36.5,
+      null
+    ],
+    [
+      100.0,
+      18.7,
+      18.7,
+      28.4,
+      27.1,
+      24.7,
+      25.3,
+      27.9,
+      24.7,
+      30.5,
+      null,
+      null
+    ],
+    [
+      100.0,
+      15.0,
+      25.2,
+      19.9,
+      22.3,
+      16.8,
+      26.8,
+      23.0,
+      27.9,
+      null,
+      null,
+      null
+    ],
+    [
+      100.0,
+      21.3,
+      20.3,
+      21.0,
+      19.7,
+      22.7,
+      21.7,
+      26.0,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      100.0,
+      19.0,
+      17.3,
+      17.3,
+      20.8,
+      23.2,
+      26.4,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      100.0,
+      17.4,
+      15.7,
+      26.4,
+      23.1,
+      33.5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      100.0,
+      18.1,
+      20.7,
+      22.3,
+      27.1,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      100.0,
+      20.7,
+      24.9,
+      24.3,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      100.0,
+      23.4,
+      30.1,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      100.0,
+      24.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      100.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  ],
+  "cohortCustomers": [
+    [
+      885,
+      324,
+      286,
+      340,
+      321,
+      352,
+      321,
+      309,
+      313,
+      350,
+      331,
+      445
+    ],
+    [
+      417,
+      92,
+      111,
+      96,
+      134,
+      120,
+      103,
+      101,
+      125,
+      136,
+      152,
+      null
+    ],
+    [
+      380,
+      71,
+      71,
+      108,
+      103,
+      94,
+      96,
+      106,
+      94,
+      116,
+      null,
+      null
+    ],
+    [
+      452,
+      68,
+      114,
+      90,
+      101,
+      76,
+      121,
+      104,
+      126,
+      null,
+      null,
+      null
+    ],
+    [
+      300,
+      64,
+      61,
+      63,
+      59,
+      68,
+      65,
+      78,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      284,
+      54,
+      49,
+      49,
+      59,
+      66,
+      75,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      242,
+      42,
+      38,
+      64,
+      56,
+      81,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      188,
+      34,
+      39,
+      42,
+      51,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      169,
+      35,
+      42,
+      41,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      299,
+      70,
+      90,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      358,
+      86,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      323,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  ],
+  "retentionCurve": [
+    {
+      "month": "M0",
+      "rate": 100.0,
+      "target": 100
+    },
+    {
+      "month": "M1",
+      "rate": 21.5,
+      "target": 29.5
+    },
+    {
+      "month": "M2",
+      "rate": 23.2,
+      "target": 31.2
+    },
+    {
+      "month": "M3",
+      "rate": 24.6,
+      "target": 32.6
+    },
+    {
+      "month": "M4",
+      "rate": 26.1,
+      "target": 34.1
+    },
+    {
+      "month": "M5",
+      "rate": 27.1,
+      "target": 35.1
+    },
+    {
+      "month": "M6",
+      "rate": 26.9,
+      "target": 34.9
+    },
+    {
+      "month": "M7",
+      "rate": 27.2,
+      "target": 35.2
+    },
+    {
+      "month": "M8",
+      "rate": 29.5,
+      "target": 37.5
+    },
+    {
+      "month": "M9",
+      "rate": 34.2,
+      "target": 42.2
+    },
+    {
+      "month": "M10",
+      "rate": 37.0,
+      "target": 45.0
+    },
+    {
+      "month": "M11",
+      "rate": 50.3,
+      "target": 58.3
+    }
+  ],
+  "segments": {
+    "Champions": {
+      "customers": 980,
+      "pct": 22.6,
+      "avgOrders": 11.5,
+      "avgLtv": 6144.1
+    },
+    "Loyal": {
+      "customers": 946,
+      "pct": 21.8,
+      "avgOrders": 3.9,
+      "avgLtv": 1432.0
+    },
+    "Potential Loyalists": {
+      "customers": 578,
+      "pct": 13.3,
+      "avgOrders": 2.0,
+      "avgLtv": 986.9
+    },
+    "At Risk": {
+      "customers": 299,
+      "pct": 6.9,
+      "avgOrders": 2.5,
+      "avgLtv": 1046.0
+    },
+    "Lost": {
+      "customers": 1535,
+      "pct": 35.4,
+      "avgOrders": 1.1,
+      "avgLtv": 424.9
+    }
+  },
+  "churnTrend": [
+    {
+      "month": "Dec",
+      "rate": 63.4
+    },
+    {
+      "month": "Jan",
+      "rate": 64.6
+    },
+    {
+      "month": "Feb",
+      "rate": 61.7
+    },
+    {
+      "month": "Mar",
+      "rate": 68.8
+    },
+    {
+      "month": "Apr",
+      "rate": 57.0
+    },
+    {
+      "month": "May",
+      "rate": 61.2
+    },
+    {
+      "month": "Jun",
+      "rate": 63.2
+    },
+    {
+      "month": "Jul",
+      "rate": 59.1
+    },
+    {
+      "month": "Aug",
+      "rate": 54.5
+    },
+    {
+      "month": "Sep",
+      "rate": 61.4
+    },
+    {
+      "month": "Oct",
+      "rate": 54.4
+    }
+  ],
+  "churnSummary": {
+    "peak": {
+      "month": "Mar",
+      "rate": 68.8
+    },
+    "current": {
+      "month": "Oct",
+      "rate": 54.4
+    },
+    "trajectory": 9.0,
+    "target": 45.0
+  },
+  "churnReasons": [
+    {
+      "label": "One-time buyers (never returned)",
+      "value": 34.5
+    },
+    {
+      "label": "Low frequency (2-3 orders)",
+      "value": 30.9
+    },
+    {
+      "label": "Medium frequency (4-9 orders)",
+      "value": 25.8
+    },
+    {
+      "label": "High frequency (10+ orders)",
+      "value": 8.9
+    }
+  ],
+  "funnel": [
+    {
+      "label": "First Purchase",
+      "value": 100.0
+    },
+    {
+      "label": "Repeat Purchase",
+      "value": 65.5
+    },
+    {
+      "label": "3+ Orders",
+      "value": 46.3
+    },
+    {
+      "label": "5+ Orders",
+      "value": 25.6
+    },
+    {
+      "label": "8+ Orders (Advocates)",
+      "value": 12.8
+    }
+  ],
+  "risk": {
+    "low": 55.9,
+    "medium": 24.3,
+    "high": 19.8
+  },
+  "journey": [
+    {
+      "stage": "Acquire",
+      "from": "All first-time buyers",
+      "pct": 100.0
+    },
+    {
+      "stage": "Activate",
+      "from": "Made a 2nd purchase",
+      "pct": 65.5
+    },
+    {
+      "stage": "Retain",
+      "from": "Reached 3+ purchases",
+      "pct": 46.3
+    },
+    {
+      "stage": "Loyalize",
+      "from": "Reached 5+ purchases",
+      "pct": 25.6
+    },
+    {
+      "stage": "Win-back",
+      "from": "Returned after 90+ day gap",
+      "pct": 35.1
+    }
+  ]
+}

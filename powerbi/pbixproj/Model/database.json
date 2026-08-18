@@ -1,0 +1,47 @@
+{
+  "name": "Churn Analytics",
+  "compatibilityLevel": 1550,
+  "model": {
+    "culture": "en-US",
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "discourageImplicitMeasures": false,
+    "relationships": [
+      {
+        "name": "Sales-Customer",
+        "fromTable": "fact_sales",
+        "fromColumn": "CustomerID",
+        "toTable": "dim_customer",
+        "toColumn": "CustomerID"
+      },
+      {
+        "name": "Sales-Product",
+        "fromTable": "fact_sales",
+        "fromColumn": "StockCode",
+        "toTable": "dim_product",
+        "toColumn": "StockCode"
+      },
+      {
+        "name": "Sales-Country",
+        "fromTable": "fact_sales",
+        "fromColumn": "Country",
+        "toTable": "dim_country",
+        "toColumn": "Country"
+      },
+      {
+        "name": "Sales-Date",
+        "fromTable": "fact_sales",
+        "fromColumn": "DateKey",
+        "toTable": "dim_date",
+        "toColumn": "DateKey"
+      },
+      {
+        "name": "Customer-Country",
+        "fromTable": "dim_customer",
+        "fromColumn": "Country",
+        "toTable": "dim_country",
+        "toColumn": "Country",
+        "isActive": false
+      }
+    ]
+  }
+}

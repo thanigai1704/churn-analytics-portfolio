@@ -1,0 +1,5 @@
+{
+  "name": "Elapsed",
+  "dataType": "int64",
+  "sourceColumn": "Elapsed"
+}

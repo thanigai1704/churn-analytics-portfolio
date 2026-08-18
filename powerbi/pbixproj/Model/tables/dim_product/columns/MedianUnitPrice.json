@@ -1,0 +1,5 @@
+{
+  "name": "MedianUnitPrice",
+  "dataType": "double",
+  "sourceColumn": "MedianUnitPrice"
+}

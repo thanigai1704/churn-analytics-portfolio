@@ -1,0 +1,5 @@
+{
+  "name": "Quarter",
+  "dataType": "int64",
+  "sourceColumn": "Quarter"
+}

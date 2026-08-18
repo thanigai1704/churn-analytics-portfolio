@@ -1,0 +1,5 @@
+DIVIDE(
+[Total Revenue],
+CALCULATE([Total Revenue], REMOVEFILTERS(dim_country)),
+0
+) * 100

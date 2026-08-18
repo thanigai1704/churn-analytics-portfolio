@@ -1,0 +1,115 @@
+{
+  "name": "00000000000a",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 860,
+        "y": 175,
+        "z": 9000,
+        "width": 380,
+        "height": 460
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "lineChart",
+    "projections": {
+      "Category": [
+        {
+          "queryRef": "cohort_matrix.ElapsedLabel",
+          "active": true
+        }
+      ],
+      "Y": [
+        {
+          "queryRef": "cohort_matrix.Avg Retention by Elapsed %"
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "cm",
+          "Entity": "cohort_matrix",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "cm"
+              }
+            },
+            "Property": "Avg Retention by Elapsed %"
+          },
+          "Name": "cohort_matrix.Avg Retention by Elapsed %"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "cm"
+              }
+            },
+            "Property": "ElapsedLabel"
+          },
+          "Name": "cohort_matrix.ElapsedLabel"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "cm"
+              }
+            },
+            "Property": "Elapsed"
+          },
+          "Name": "cohort_matrix.Elapsed"
+        }
+      ],
+      "OrderBy": [
+        {
+          "Direction": 1,
+          "Expression": {
+            "Column": {
+              "Expression": {
+                "SourceRef": {
+                  "Source": "cm"
+                }
+              },
+              "Property": "Elapsed"
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "hasDefaultSort": true,
+    "vcObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Retention Curve'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

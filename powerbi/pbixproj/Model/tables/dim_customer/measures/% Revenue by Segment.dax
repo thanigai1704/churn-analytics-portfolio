@@ -1,0 +1,5 @@
+DIVIDE(
+CALCULATE([Total Revenue], dim_customer[RFM_Segment]),
+CALCULATE([Total Revenue], REMOVEFILTERS(dim_customer)),
+0
+) * 100

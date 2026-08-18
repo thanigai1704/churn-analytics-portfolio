@@ -1,0 +1,93 @@
+{
+  "Commands": [
+    {
+      "SemanticQueryDataShapeCommand": {
+        "Query": {
+          "Version": 2,
+          "Select": [
+            {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Source": "co"
+                  }
+                },
+                "Property": "Country"
+              },
+              "Name": "dim_country.Country"
+            },
+            {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Source": "f"
+                  }
+                },
+                "Property": "Customers by Country"
+              },
+              "Name": "fact_sales.Customers by Country"
+            },
+            {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Source": "f"
+                  }
+                },
+                "Property": "Total Revenue"
+              },
+              "Name": "fact_sales.Total Revenue"
+            },
+            {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Source": "f"
+                  }
+                },
+                "Property": "Avg Order Value (Country)"
+              },
+              "Name": "fact_sales.Avg Order Value (Country)"
+            }
+          ],
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "fact_sales",
+              "Type": 0
+            },
+            {
+              "Name": "co",
+              "Entity": "dim_country",
+              "Type": 0
+            }
+          ]
+        },
+        "Binding": {
+          "Primary": {
+            "Groupings": [
+              {
+                "Projections": [
+                  0,
+                  1,
+                  2,
+                  3
+                ]
+              }
+            ]
+          },
+          "DataReduction": {
+            "DataVolume": 4,
+            "Primary": {
+              "TopN": {
+                "Count": 500
+              }
+            }
+          },
+          "Version": 1
+        },
+        "ExecutionMetricsKind": 1
+      }
+    }
+  ]
+}

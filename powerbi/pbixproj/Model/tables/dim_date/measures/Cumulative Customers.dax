@@ -1,0 +1,4 @@
+CALCULATE(
+[New Customers],
+FILTER(ALL(dim_date), dim_date[Date] <= MAX(dim_date[Date]))
+)

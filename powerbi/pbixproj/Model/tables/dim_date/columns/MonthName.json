@@ -1,0 +1,5 @@
+{
+  "name": "MonthName",
+  "dataType": "string",
+  "sourceColumn": "MonthName"
+}

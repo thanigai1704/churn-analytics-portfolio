@@ -1,0 +1,81 @@
+{
+  "Commands": [
+    {
+      "SemanticQueryDataShapeCommand": {
+        "Query": {
+          "Version": 2,
+          "Select": [
+            {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Source": "cm"
+                  }
+                },
+                "Property": "Cohort Retention %"
+              },
+              "Name": "cohort_matrix.Cohort Retention %"
+            },
+            {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Source": "cm"
+                  }
+                },
+                "Property": "Cohort"
+              },
+              "Name": "cohort_matrix.Cohort"
+            },
+            {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Source": "cm"
+                  }
+                },
+                "Property": "ElapsedLabel"
+              },
+              "Name": "cohort_matrix.ElapsedLabel"
+            }
+          ],
+          "From": [
+            {
+              "Name": "cm",
+              "Entity": "cohort_matrix",
+              "Type": 0
+            }
+          ]
+        },
+        "Binding": {
+          "Primary": {
+            "Groupings": [
+              {
+                "Projections": [
+                  1
+                ],
+                "Subtotal": 1
+              },
+              {
+                "Projections": [
+                  2
+                ],
+                "Subtotal": 1
+              }
+            ]
+          },
+          "DataReduction": {
+            "DataVolume": 3,
+            "Primary": {
+              "Window": {
+                "Count": 500
+              }
+            }
+          },
+          "Version": 1
+        },
+        "ExecutionMetricsKind": 1
+      }
+    }
+  ]
+}

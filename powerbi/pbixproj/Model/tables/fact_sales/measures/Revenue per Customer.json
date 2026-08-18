@@ -1,0 +1,4 @@
+{
+  "name": "Revenue per Customer",
+  "formatString": "\u00a3#,##0.00"
+}

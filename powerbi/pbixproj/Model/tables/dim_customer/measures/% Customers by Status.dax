@@ -1,0 +1,1 @@
+DIVIDE(COUNTROWS(dim_customer), [All-Time Customers], 0) * 100

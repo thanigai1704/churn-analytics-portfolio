@@ -1,0 +1,1 @@
+CALCULATE(AVERAGE(dim_customer[LTV_GBP]), dim_customer[OrderSessions] = 1, REMOVEFILTERS(dim_date))

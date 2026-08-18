@@ -1,0 +1,5 @@
+{
+  "name": "OrderSessions",
+  "dataType": "int64",
+  "sourceColumn": "OrderSessions"
+}

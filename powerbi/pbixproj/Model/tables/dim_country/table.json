@@ -1,0 +1,12 @@
+{
+  "name": "dim_country",
+  "partitions": [
+    {
+      "name": "dim_country",
+      "mode": "import",
+      "source": {
+        "type": "m"
+      }
+    }
+  ]
+}

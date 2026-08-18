@@ -1,0 +1,5 @@
+{
+  "name": "InvoiceNo",
+  "dataType": "string",
+  "sourceColumn": "InvoiceNo"
+}

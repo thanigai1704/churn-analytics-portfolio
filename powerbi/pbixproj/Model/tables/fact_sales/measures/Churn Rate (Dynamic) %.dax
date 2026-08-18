@@ -1,0 +1,5 @@
+VAR CurMonth = MAX(fact_sales[MonthKey])
+VAR ActiveCur = CALCULATE(DISTINCTCOUNT(fact_sales[CustomerID]), fact_sales[MonthKey] = CurMonth)
+VAR ActiveNext = CALCULATE(DISTINCTCOUNT(fact_sales[CustomerID]), fact_sales[MonthKey] = CurMonth + 1)
+VAR Churned = ActiveCur - ActiveNext
+RETURN DIVIDE(Churned, ActiveCur, 0) * 100

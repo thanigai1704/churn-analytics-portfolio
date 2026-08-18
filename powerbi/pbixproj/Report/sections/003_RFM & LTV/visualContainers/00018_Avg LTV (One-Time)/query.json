@@ -1,0 +1,44 @@
+{
+  "Commands": [
+    {
+      "SemanticQueryDataShapeCommand": {
+        "Query": {
+          "Version": 2,
+          "Select": [
+            {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Source": "c"
+                  }
+                },
+                "Property": "Avg LTV (One-Time)"
+              },
+              "Name": "dim_customer.Avg LTV (One-Time)"
+            }
+          ],
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "dim_customer",
+              "Type": 0
+            }
+          ]
+        },
+        "Binding": {
+          "Primary": {
+            "Groupings": []
+          },
+          "DataReduction": {
+            "DataVolume": 4,
+            "Primary": {
+              "Count": 1
+            }
+          },
+          "Version": 1
+        },
+        "ExecutionMetricsKind": 1
+      }
+    }
+  ]
+}

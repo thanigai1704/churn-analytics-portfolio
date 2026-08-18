@@ -1,0 +1,8 @@
+VAR TotalCust = COUNTROWS(dim_customer)
+VAR Cutoff = ROUND(TotalCust * 0.2, 0)
+VAR TopCust = SELECTCOLUMNS(
+TOPN(Cutoff, dim_customer, dim_customer[LTV_GBP], DESC),
+"cid", dim_customer[CustomerID]
+)
+VAR RevTop = CALCULATE(SUM(dim_customer[LTV_GBP]), KEEPFILTERS(TopCust))
+RETURN DIVIDE(RevTop, SUM(dim_customer[LTV_GBP]), 0) * 100

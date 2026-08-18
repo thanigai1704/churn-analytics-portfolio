@@ -1,0 +1,12 @@
+{
+  "name": "fact_sales",
+  "partitions": [
+    {
+      "name": "fact_sales",
+      "mode": "import",
+      "source": {
+        "type": "m"
+      }
+    }
+  ]
+}

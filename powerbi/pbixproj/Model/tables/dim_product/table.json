@@ -1,0 +1,12 @@
+{
+  "name": "dim_product",
+  "partitions": [
+    {
+      "name": "dim_product",
+      "mode": "import",
+      "source": {
+        "type": "m"
+      }
+    }
+  ]
+}

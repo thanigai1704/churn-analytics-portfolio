@@ -1,0 +1,5 @@
+{
+  "name": "RetentionPct",
+  "dataType": "double",
+  "sourceColumn": "RetentionPct"
+}

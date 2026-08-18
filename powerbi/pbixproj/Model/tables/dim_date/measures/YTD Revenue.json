@@ -1,0 +1,4 @@
+{
+  "name": "YTD Revenue",
+  "formatString": "\u00a3#,##0.00"
+}
