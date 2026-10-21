@@ -195,12 +195,13 @@ export default function Hero() {
         >
           Transforming{' '}
           <span className="font-semibold text-cyan-brand">
-            {source.rows.toLocaleString()} real transactions
+            {source.rows.toLocaleString()} raw rows
           </span>{' '}
-          from the public UCI Online Retail dataset into retention strategies through{' '}
+          from the public UCI Online Retail dataset into a cleaned set of{' '}
+          <span className="font-semibold text-purple-brand">{(397884).toLocaleString()}</span> customer-analysable lines, delivered as{' '}
           <span className="font-semibold text-purple-brand">Python</span>,{' '}
-          <span className="font-semibold text-purple-brand">SQL</span>, and{' '}
-          <span className="font-semibold text-purple-brand">Power BI</span>.
+          <span className="font-semibold text-purple-brand">Power BI</span>, and{' '}
+          <span className="font-semibold text-purple-brand">React</span> dashboards.
         </motion.p>
 
         <motion.div

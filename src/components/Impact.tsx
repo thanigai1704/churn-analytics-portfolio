@@ -16,22 +16,22 @@ const impacts = [
   {
     icon: Database,
     title: 'Cohort Retention Matrix',
-    body: 'Engineered a 12-month Cohort Retention Matrix in Python/Pandas on 541,909 real transaction records, surfacing a 78.5% Month-1 drop-off — 34.5% of customers buy once and never return.',
-    metric: '78% drop-off',
-    metricLabel: 'Month 1 · pinpointed',
+    body: 'Engineered a cohort retention matrix in Python/Pandas on 397,884 cleaned transaction rows from the UCI Online Retail dataset, surfacing a 78.5% Month-1 drop-off — 34.5% of customers buy once and never return.',
+    metric: '78.5% drop-off',
+    metricLabel: 'Month 1 · observed',
     color: '#00E5FF',
-    stat: '542K',
-    statLabel: 'transactions analyzed',
+    stat: '397.9K',
+    statLabel: 'clean rows analyzed',
   },
   {
     icon: BarChart3,
-    title: 'RFM Segmentation Dashboard',
-    body: 'Scored all 4,338 customers on Recency, Frequency and Monetary value into five action-ready segments, delivering insights that could improve customer Lifetime Value by 15% through targeted retention plays.',
-    metric: '+15% LTV',
-    metricLabel: 'modeled impact',
+    title: 'RFM Segmentation',
+    body: 'Scored all 4,338 customers on recency, frequency and monetary value into five explicit, rule-based segments with values traceable to the source data and consistent across Power BI and the web dashboard.',
+    metric: '5 segments',
+    metricLabel: 'rule-based, traceable',
     color: '#8B5CF6',
-    stat: '5',
-    statLabel: 'action-ready segments',
+    stat: '4,338',
+    statLabel: 'customers segmented',
   },
 ]
 
@@ -123,7 +123,7 @@ export default function Impact() {
 
               <div className="flex shrink-0 flex-col gap-4 sm:flex-row lg:flex-col xl:flex-row">
                 <motion.a
-                  href="https://github.com"
+                  href="https://github.com/thanigai1704/churn-analytics-portfolio"
                   target="_blank"
                   rel="noreferrer"
                   whileHover={{ scale: 1.04 }}
@@ -138,7 +138,7 @@ export default function Impact() {
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                 </motion.a>
                 <motion.a
-                  href="#overview"
+                  href="https://churn-analytics-portfolio.vercel.app/#overview"
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
                   className="group flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-8 py-4 font-display text-sm font-bold text-softwhite backdrop-blur-md transition-colors duration-300 hover:border-emerald-brand/50 hover:text-emerald-brand hover:shadow-glow-cyan"
