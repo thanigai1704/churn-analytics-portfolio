@@ -18,7 +18,7 @@ import {
   cohortCustomers,
   cohortMatrix,
   cohortMonths,
-  recoverableLtv,
+  metricNotes,
   retentionCurve,
 } from '../data/analytics'
 import GlassCard from './ui/GlassCard'
@@ -240,7 +240,9 @@ export default function CohortAnalysis() {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-display text-lg font-bold text-softwhite">Retention Curve</h3>
-                  <p className="text-xs text-slate-500">Average across cohorts · target modeled</p>
+                  <p className="text-xs text-slate-500">
+                    {metricNotes.cohortAveraging}
+                  </p>
                 </div>
                 <div className="flex items-center gap-3 text-[10px] text-slate-400">
                   <span className="flex items-center gap-1">
@@ -320,8 +322,8 @@ export default function CohortAnalysis() {
                     <p className="mt-0.5 text-xs leading-relaxed text-slate-400">
                       Average retention collapses from 100% to {m1Avg}% in a single month — a{' '}
                       <span className="font-bold text-coral-brand">{m1Dropoff}-point cliff</span>.
-                      34.5% of customers never make a second purchase, and the modeled target for
-                      Month 1 is {retentionCurve[1].target}%.
+                      34.5% of customers never make a second purchase. The dashed {retentionCurve[1].target}%
+                      line is the retention goal — an objective, not a projection.
                     </p>
                   </div>
                 </div>
@@ -416,8 +418,8 @@ export default function CohortAnalysis() {
               </div>
               <p className="mt-4 text-xs leading-relaxed text-slate-500">
                 Month 1 shows the deepest average decline of{' '}
-                <span className="font-bold text-coral-brand">{m1Dropoff} points</span> across all
-                twelve cohorts — a systematic, fixable pattern.
+                <span className="font-bold text-coral-brand">{m1Dropoff} points</span> across every
+                cohort with a complete observation window — a systematic, fixable pattern.
               </p>
             </GlassCard>
           </Reveal>
@@ -437,12 +439,14 @@ export default function CohortAnalysis() {
                   in average LTV.
                 </p>
                 <p>
-                  <span className="font-bold text-emerald-brand">03 ·</span> A 5-point lift in
-                  Month-1 retention recovers an estimated{' '}
-                  <span className="font-bold text-emerald-brand">
-                    £{Math.round(recoverableLtv / 1000)}K
-                  </span>{' '}
-                  in annual LTV.
+                  <span className="font-bold text-emerald-brand">03 ·</span> Scenario, not a
+                  forecast: a 5-point Month-1 retention lift means{' '}
+                  <span className="font-bold text-softwhite">~217 additional repeat customers</span>{' '}
+                  (4,338 × 5%). At the observed £2,502 value gap between repeat and one-time
+                  buyers, that is roughly{' '}
+                  <span className="font-bold text-emerald-brand">£540K</span> of extra revenue over
+                  the dataset's 12-month window — arithmetic on current averages, so it assumes the
+                  new customers behave like existing ones.
                 </p>
                 <p>
                   <span className="font-bold text-amber-brand">04 ·</span> Action: deploy a{' '}

@@ -81,7 +81,7 @@ export default function Hero() {
               <TrendingDown className="h-4 w-4 text-coral-brand" />
             </span>
             <div>
-              <p className="text-xs text-slate-400">Monthly Churn</p>
+              <p className="text-xs text-slate-400">Monthly Non-Return</p>
               <p className="font-display text-lg font-bold text-coral-brand">
                 {metrics.churnRate}%
               </p>
@@ -93,7 +93,7 @@ export default function Hero() {
 
       <FloatingCard className="left-[12%] bottom-[20%]" delay={1.1}>
         <div className="glass rounded-2xl p-4 shadow-xl shadow-black/30">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Avg. LTV</p>
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Avg. Customer Value</p>
           <div className="flex items-end gap-1">
             {[35, 52, 44, 66, 58, 82, 74, 96].map((h, i) => (
               <motion.span

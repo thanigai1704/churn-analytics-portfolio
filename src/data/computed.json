@@ -31,7 +31,30 @@
     "avgLtvOnce": 414.48,
     "ltvMultiple": 7.0,
     "top20RevShare": 74.6,
-    "avgMonthlyChurn": 60.8
+    "avgMonthlyChurn": 60.8,
+    "invoiceInstances": 18532,
+    "purchaseOccasions": 18440,
+    "repeatRateInvoices": 65.6
+  },
+  "metricDefinitionNotes": {
+    "monthlyChurn": "The monthly churn rate is a month-over-month non-return rate: customers active in month M who are absent in month M+1. A single one-month gap does not mean a customer is gone for good, so this metric is read for trend (improving/worsening) rather than as a definitive churned count. Definitive inactivity-based churn uses the 90/180-day recency cutoffs in the inactivity block.",
+    "frequency": "Customer frequency is counted as distinct purchase dates (occasions). The invoice-based repeat rate is reported alongside it as a cross-check; occasions is slightly stricter because multiple invoices on the same day count once.",
+    "avgLtv": "Avg LTV is the customer's total observed revenue over the 12-month dataset window. It is a historical value measure, not a predictive lifetime value estimate.",
+    "cohortAveraging": "Cohort retention curve values are simple (unweighted) means across the cohorts with a complete observation window for that elapsed month. A customer-weighted rate can be computed from the cohort matrix and would weight larger cohorts more heavily."
+  },
+  "inactivity": {
+    "medianGapDays": 28.0,
+    "p75GapDays": 58.0,
+    "p90GapDays": 110.0,
+    "gapOver90Pct": 14.1,
+    "gapOver180Pct": 3.5,
+    "customersWithMedianGapOver90": 27.9,
+    "customersWithMedianGapOver180": 8.2,
+    "inactive90": 1441,
+    "inactive90Pct": 33.2,
+    "inactive180": 858,
+    "inactive180Pct": 19.8,
+    "note": "Inactivity thresholds are read off the observed inter-purchase gap distribution. Most repeat customers return well within 90 days; gaps flagged over 90/180 days are behaviour outliers. The medianGap flags are computed over repeat buyers only; one-time buyers have no observed gap."
   },
   "deltas": {
     "customers": {

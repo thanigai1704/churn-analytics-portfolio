@@ -159,9 +159,9 @@ export default function ExecutiveOverview() {
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
                   Across {source.customers.toLocaleString()} customers,{' '}
                   <span className="font-semibold text-coral-brand">34.5% never make a second
-                  purchase</span>. Retained customers are worth{' '}
+                  purchase</span>. Repeat customers spend{' '}
                   <span className="font-semibold text-emerald-brand">7× more</span> (£2,917 vs
-                  £414 LTV), and the top 20% of buyers drive{' '}
+                  £414 observed value), and the top 20% of buyers drive{' '}
                   <span className="font-semibold text-cyan-brand">74.6% of revenue</span>. The
                   highest-impact moment is the first 30 days after a first purchase.
                 </p>

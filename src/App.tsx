@@ -10,6 +10,7 @@ import ParticleBackground from './components/effects/ParticleBackground'
 const CohortAnalysis = lazy(() => import('./components/CohortAnalysis'))
 const RFMSegmentation = lazy(() => import('./components/RFMSegmentation'))
 const ChurnInsights = lazy(() => import('./components/ChurnInsights'))
+const SqlAudit = lazy(() => import('./components/SqlAudit'))
 const PowerBI = lazy(() => import('./components/PowerBI'))
 
 function SectionFallback() {
@@ -41,6 +42,7 @@ export default function App() {
             <CohortAnalysis />
             <RFMSegmentation />
             <ChurnInsights />
+            <SqlAudit />
             <PowerBI />
           </Suspense>
           <Impact />

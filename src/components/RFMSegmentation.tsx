@@ -156,7 +156,9 @@ export default function RFMSegmentation() {
                 <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3.5">
                   <div className="flex items-center gap-2 text-slate-400">
                     <Wallet className="h-3.5 w-3.5" />
-                    <span className="text-[10px] font-semibold uppercase tracking-wider">Avg LTV</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider">
+                      Avg Value <span className="normal-case font-normal text-slate-600">(observed)</span>
+                    </span>
                   </div>
                   <AnimatePresence mode="wait">
                     <motion.p
@@ -266,15 +268,17 @@ export default function RFMSegmentation() {
                 </span>
                 <div>
                   <h3 className="font-display text-xl font-bold text-softwhite">
-                    Segmentation ROI: <span className="text-emerald-brand">+15% LTV</span>
+                    Segmentation Value: <span className="text-emerald-brand">74.6% of revenue in 20% of customers</span>
                   </h3>
                   <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-400">
                     Scoring all {totalCustomers.toLocaleString()} customers on Recency, Frequency
-                    and Monetary value let us target the{' '}
-                    <span className="font-semibold text-amber-brand">right play</span> at the{' '}
-                    <span className="font-semibold text-cyan-brand">right segment</span>. Modeled
-                    impact: a <span className="font-bold text-emerald-brand">15% lift in customer
-                    lifetime value</span> within three quarters, without discounting to the entire base.
+                    and Monetary value pinpoints exactly where the money is:{' '}
+                    <span className="font-semibold text-amber-brand">top-20% customers</span> — mostly
+                    Champions and Loyal — generate{' '}
+                    <span className="font-bold text-emerald-brand">74.6% of all revenue</span>, while the
+                    At-Risk and Lost pool (42.3% of customers) holds real spend history that
+                    win-back flows can target without blanket discounting. Measured on this
+                    dataset — no modeled lift is claimed here.
                   </p>
                 </div>
               </div>

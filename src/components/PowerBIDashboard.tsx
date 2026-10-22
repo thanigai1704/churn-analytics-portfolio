@@ -356,9 +356,9 @@ function OverviewTab({ data }: TabProps) {
 
         <div className="grid grid-cols-1 gap-4 lg:col-span-2">
           <ChartCard
-            title="Churn Rate Trend"
-            subtitle={`${one(lastChurn.ChurnRatePct)} current · target 45%`}
-            legend={[{ label: 'Churn', color: COLORS.coral }]}
+            title="Monthly Non-Return Trend"
+            subtitle={`${one(lastChurn.ChurnRatePct)} current · goal 45%`}
+            legend={[{ label: 'Non-return', color: COLORS.coral }]}
           >
             <div className="h-28">
               <ResponsiveContainer width="100%" height="100%">
@@ -693,22 +693,22 @@ function ChurnTab({ data }: TabProps) {
   return (
     <div className="grid grid-cols-1 gap-4">
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <KpiCard label="Current Churn" value={one(lastChurn.ChurnRatePct)} sub="Dec 2011" color={COLORS.coral} />
+        <KpiCard label="Current Non-Return" value={one(lastChurn.ChurnRatePct)} sub="Dec 2011" color={COLORS.coral} />
         <KpiCard
-          label="Avg Monthly Churn"
+          label="Avg Monthly Non-Return"
           value={one(data.churn.reduce((a, b) => a + b.ChurnRatePct, 0) / data.churn.length)}
           sub="across 11 months"
           color={COLORS.amber}
         />
-        <KpiCard label="Churned Customers" value={int(lastChurn.ChurnedCustomers)} sub="in Dec 2011" color={COLORS.coral} />
+        <KpiCard label="Non-Returned in Month" value={int(lastChurn.ChurnedCustomers)} sub="in Dec 2011" color={COLORS.coral} />
         <KpiCard label="Active Customers" value={int(lastChurn.ActiveCustomers)} sub="in Dec 2011" color={COLORS.emerald} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
         <ChartCard
-          title="Monthly Churn vs Target"
-          subtitle="Churn rate % · reference line at 45%"
-          legend={[{ label: 'Churn rate', color: COLORS.coral }, { label: 'Target', color: COLORS.emerald }]}
+          title="Monthly Non-Return vs Target"
+          subtitle="Customers active in month M absent in M+1 · 45% goal"
+          legend={[{ label: 'Non-return rate', color: COLORS.coral }, { label: 'Target', color: COLORS.emerald }]}
           className="lg:col-span-3"
         >
           <div className="h-52">
@@ -720,11 +720,11 @@ function ChurnTab({ data }: TabProps) {
                 <Tooltip
                   content={({ active, payload, label }) =>
                     active && payload?.length ? (
-                      <TooltipShell title={String(label)} rows={[['Churn rate', one(Number(payload[0].value))]]} />
+                      <TooltipShell title={String(label)} rows={[['Non-return rate', one(Number(payload[0].value))]]} />
                     ) : null
                   }
                 />
-                <ReferenceLine y={45} stroke={COLORS.emerald} strokeDasharray="4 4" label={{ value: 'Target 45%', position: 'insideTopRight', fill: COLORS.emerald, fontSize: 9 }} />
+                <ReferenceLine y={45} stroke={COLORS.emerald} strokeDasharray="4 4" label={{ value: 'Goal 45%', position: 'insideTopRight', fill: COLORS.emerald, fontSize: 9 }} />
                 <Line type="monotone" dataKey="ChurnRatePct" stroke={COLORS.coral} strokeWidth={2.5} dot={{ r: 3, fill: COLORS.coral, strokeWidth: 0 }} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>

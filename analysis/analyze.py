@@ -49,6 +49,7 @@ orders = df.groupby("CustomerID").agg(
     last_purchase=("InvoiceDate", "max"),
     monetary=("Revenue", "sum"),
     order_sessions=("InvoiceDate", "nunique"),
+    invoice_count=("InvoiceNo", "nunique"),
 ).reset_index()
 orders["first_month"] = orders["first_purchase"].dt.year * 12 + orders["first_purchase"].dt.month
 orders["recency_days"] = (SNAPSHOT - orders["last_purchase"]).dt.days
@@ -61,6 +62,12 @@ avg_ltv = float(round(orders["monetary"].mean(), 2))
 avg_ltv_repeat = float(round(orders.loc[orders["order_sessions"] >= 2, "monetary"].mean(), 2))
 avg_ltv_once = float(round(orders.loc[orders["order_sessions"] == 1, "monetary"].mean(), 2))
 ltv_multiple = round(avg_ltv_repeat / avg_ltv_once, 1)
+
+# Frequency can be counted two ways: distinct invoices vs distinct purchase dates.
+# Both are reported so the difference is visible rather than hidden.
+invoice_instances = int(df["InvoiceNo"].nunique())
+purchase_occasions = int(orders["order_sessions"].sum())
+repeat_rate_invoices = round(float((orders["invoice_count"] >= 2).mean() * 100), 1)
 
 top20 = orders.nlargest(int(n_customers * 0.2), "monetary")
 top20_rev_share = round(float(top20["monetary"].sum() / orders["monetary"].sum() * 100), 1)
@@ -182,14 +189,36 @@ high = float((orders["recency_days"] > 180).mean() * 100)
 risk = {"low": round(low, 1), "medium": round(med, 1), "high": round(high, 1)}
 
 # ---------------------------------------------------------------- journey flow (win-back = returned after 90+ day gap)
+# Also collect the full distribution of inter-purchase gaps so the inactivity
+# thresholds are chosen from the data instead of guessed.
 gap_returners = 0
-last_dates = {}
+all_gaps = []          # every observed gap between consecutive unique purchase dates, per customer
+customer_median_gaps = []
 for cid, dates in df.groupby("CustomerID")["InvoiceDate"].apply(lambda s: sorted(s.dt.date.unique())).items():
-    for i in range(1, len(dates)):
-        if (dates[i] - dates[i - 1]).days >= 90:
-            gap_returners += 1
-            break
+    if len(dates) >= 2:
+        diffs = [(dates[i] - dates[i - 1]).days for i in range(1, len(dates))]
+        all_gaps.extend(diffs)
+        customer_median_gaps.append(float(np.median(diffs)))
+    if any((dates[i] - dates[i - 1]).days >= 90 for i in range(1, len(dates))):
+        gap_returners += 1
 winback_pct = round(gap_returners / n_customers * 100, 1)
+winback_pct_180 = round(float((np.array(customer_median_gaps) > 180).mean() * 100), 1) if customer_median_gaps else 0.0
+
+gap_days = np.array(all_gaps)
+inactivity = {
+    "medianGapDays": round(float(np.median(gap_days)), 1) if len(gap_days) else 0,
+    "p75GapDays": round(float(np.percentile(gap_days, 75)), 1) if len(gap_days) else 0,
+    "p90GapDays": round(float(np.percentile(gap_days, 90)), 1) if len(gap_days) else 0,
+    "gapOver90Pct": round(float((gap_days > 90).mean() * 100), 1) if len(gap_days) else 0,
+    "gapOver180Pct": round(float((gap_days > 180).mean() * 100), 1) if len(gap_days) else 0,
+    "customersWithMedianGapOver90": round(float((np.array(customer_median_gaps) > 90).mean() * 100), 1) if customer_median_gaps else 0.0,
+    "customersWithMedianGapOver180": winback_pct_180,
+    "inactive90": int((orders["recency_days"] > 90).sum()),
+    "inactive90Pct": round(float((orders["recency_days"] > 90).mean() * 100), 1),
+    "inactive180": int((orders["recency_days"] > 180).sum()),
+    "inactive180Pct": round(float((orders["recency_days"] > 180).mean() * 100), 1),
+    "note": "Inactivity thresholds are read off the observed inter-purchase gap distribution. Most repeat customers return well within 90 days; gaps flagged over 90/180 days are behaviour outliers. The medianGap flags are computed over repeat buyers only; one-time buyers have no observed gap.",
+}
 
 journey = [
     {"stage": "Acquire", "from": "All first-time buyers", "pct": 100.0},
@@ -243,7 +272,17 @@ out = {
         "ltvMultiple": ltv_multiple,
         "top20RevShare": top20_rev_share,
         "avgMonthlyChurn": avg_monthly_churn,
+        "invoiceInstances": invoice_instances,
+        "purchaseOccasions": purchase_occasions,
+        "repeatRateInvoices": repeat_rate_invoices,
     },
+    "metricDefinitionNotes": {
+        "monthlyChurn": "The monthly churn rate is a month-over-month non-return rate: customers active in month M who are absent in month M+1. A single one-month gap does not mean a customer is gone for good, so this metric is read for trend (improving/worsening) rather than as a definitive churned count. Definitive inactivity-based churn uses the 90/180-day recency cutoffs in the inactivity block.",
+        "frequency": "Customer frequency is counted as distinct InvoiceDate timestamps (purchase occasions). Invoice instances are reported separately as a cross-check: 18,532 invoices vs 18,440 occasions, because a few customers have a credit note timestamped at the exact same moment as the invoice it cancels. The two repeat rates (65.6% invoice-based, 65.5% occasion-based) differ by less than a point.",
+        "avgLtv": "Avg LTV is the customer's total observed revenue over the 12-month dataset window. It is a historical value measure, not a predictive lifetime value estimate.",
+        "cohortAveraging": "Cohort retention curve values are simple (unweighted) means across the cohorts with a complete observation window for that elapsed month. A customer-weighted rate can be computed from the cohort matrix and would weight larger cohorts more heavily.",
+    },
+    "inactivity": inactivity,
     "deltas": {
         "customers": {"value": acquisition_delta, "positive": False, "note": "H2 vs H1 acquisition"},
         "retention": {"value": retention_delta, "positive": retention_delta >= 0, "note": "recent cohorts"},
@@ -283,4 +322,6 @@ print("churn trend:", [(c["month"], c["rate"]) for c in churn_trend], "| avg:", 
 print("churn reasons:", churn_reasons)
 print("funnel:", [f["value"] for f in funnel])
 print("risk:", risk, "| winback:", winback_pct)
+print("inactivity:", inactivity)
+print("orders:", {"invoiceInstances": invoice_instances, "purchaseOccasions": purchase_occasions, "repeatRateInvoices": repeat_rate_invoices})
 print("deltas:", out["deltas"])

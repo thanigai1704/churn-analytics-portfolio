@@ -159,7 +159,10 @@ fact_df = df.rename(columns={"InvoiceNo": "InvoiceNo", "Country": "Country"})[
 ].copy()
 fact_df["DateKey"] = fact_df["InvoiceDate"].dt.strftime("%Y%m%d").astype(int)
 fact_df["Region"] = fact_df["Country"].map(region_of)
-fact_df["InvoiceDate"] = fact_df["InvoiceDate"].dt.strftime("%Y-%m-%d")
+# InvoiceDate keeps the full timestamp so the "purchase occasion" metric
+# (distinct InvoiceDate per customer, matching analysis/analyze.py) can be
+# reproduced directly from the fact table with SQL.
+fact_df["InvoiceDate"] = fact_df["InvoiceDate"].dt.strftime("%Y-%m-%d %H:%M:%S")
 fact_df = fact_df.sort_values("InvoiceDate")
 fact_df.to_csv(OUT / "fact_sales.csv", index=False)
 

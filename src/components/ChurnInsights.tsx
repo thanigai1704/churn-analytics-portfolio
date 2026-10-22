@@ -15,6 +15,7 @@ import {
   churnSummary,
   churnTrend,
   funnelStages,
+  inactivity,
   journeyFlow,
   recommendations,
   riskDistribution,
@@ -140,10 +141,10 @@ export default function ChurnInsights() {
       <div className="absolute left-0 top-32 h-80 w-80 rounded-full bg-coral-brand/8 blur-[130px]" />
       <div className="mx-auto max-w-7xl">
         <SectionHeading
-          eyebrow="Churn Prediction Insights"
-          title="Predicting the"
+          eyebrow="Churn & Inactivity Insights"
+          title="Understanding the"
           highlight="Silent Churn"
-          description="A hybrid scorecard of recency, engagement and transactional momentum classifies every customer's churn risk in real time — so retention effort lands before the customer leaves."
+          description="A transparent, rule-based scorecard built on recency and frequency thresholds classifies every customer's separation status. No black-box model — every band is auditable with three lines of SQL, and thresholds come from the observed inter-purchase gap distribution."
         />
 
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -164,6 +165,11 @@ export default function ChurnInsights() {
                   />
                 ))}
               </div>
+              <p className="mt-3 text-[10px] leading-relaxed text-slate-500">
+                Transparent recency rules − not a trained model: active ≤60 days → Low, silent
+                61–180 days → Medium, silent &gt;180 days → High. Every band is auditable in SQL
+                (see the audit card below).
+              </p>
               <div className="mt-6 space-y-3">
                 {churnReasons.map((reason, i) => (
                   <div key={reason.label}>
@@ -188,6 +194,15 @@ export default function ChurnInsights() {
                 once and never return</span> — best addressed with a second-purchase incentive, not
                 blanket discounts.
               </p>
+              <div className="mt-4 border-t border-white/10 pt-3 text-[11px] leading-relaxed text-slate-500">
+                <span className="font-semibold text-slate-300">Why these thresholds:</span> the
+                median gap between purchases is <span className="font-bold text-softwhite">{inactivity.medianGapDays} days</span>{' '}
+                (90th percentile {inactivity.p90GapDays} days). Only{' '}
+                <span className="font-bold text-softwhite">{inactivity.gapOver180Pct}%</span> of observed
+                gaps are longer than 180 days, and <span className="font-bold text-softwhite">{inactivity.inactive180}</span>{' '}
+                customers ({inactivity.inactive180Pct}%) are currently silent that long — that band is
+                treated as separated, not a one-month blip.
+              </div>
             </GlassCard>
           </Reveal>
 
@@ -195,12 +210,12 @@ export default function ChurnInsights() {
             <GlassCard className="flex h-full flex-col p-5 sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h3 className="font-display text-lg font-bold text-softwhite">Monthly Churn Trend</h3>
-                  <p className="text-xs text-slate-500">Monthly cohort churn · Dec 2010 – Oct 2011</p>
+                  <h3 className="font-display text-lg font-bold text-softwhite">Monthly Non-Return Trend</h3>
+                  <p className="text-xs text-slate-500">Customers active in month M who don't return in M+1 · Dec 2010 – Oct 2011</p>
                 </div>
                 <div className="flex items-center gap-3 text-[11px] text-slate-400">
                   <span className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full bg-coral-brand" /> Churn rate
+                    <span className="h-2 w-2 rounded-full bg-coral-brand" /> Non-return rate
                   </span>
                   <span className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-emerald-brand" /> Target
@@ -250,9 +265,13 @@ export default function ChurnInsights() {
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
+              <p className="mt-3 text-[10px] leading-relaxed text-slate-600">
+                A single month missed does not mean a customer is gone for good — this series is read
+                for trend direction. Definitive separations use the 90/180-day recency cutoffs above.
+              </p>
               <div className="mt-4 grid grid-cols-3 gap-3">
                 {[
-                  { label: 'Peak churn', value: `${churnSummary.peak.rate}%`, note: churnSummary.peak.month, color: 'text-coral-brand' },
+                  { label: 'Peak rate', value: `${churnSummary.peak.rate}%`, note: churnSummary.peak.month, color: 'text-coral-brand' },
                   { label: 'Current', value: `${churnSummary.current.rate}%`, note: churnSummary.current.month, color: 'text-amber-brand' },
                   { label: 'Trajectory', value: `−${churnSummary.trajectory}pts`, note: 'YTD', color: 'text-emerald-brand' },
                 ].map((stat) => (

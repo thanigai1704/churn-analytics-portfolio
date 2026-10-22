@@ -1,0 +1,298 @@
+{
+  "engine": "SQLite (in-memory), loaded from powerbi/data/*.csv prepared by powerbi/prepare_data.py",
+  "sourceFile": "sql/retention_validation.sql",
+  "queries": [
+    {
+      "id": "Q1",
+      "title": "Dataset scale",
+      "sql": "SELECT\n    COUNT(*)                                                 AS rows_analysed,\n    COUNT(DISTINCT CustomerID)                               AS customers,\n    COUNT(DISTINCT InvoiceNo)                                AS invoices,\n    COUNT(DISTINCT CustomerID || '_' || InvoiceDate)         AS purchase_occasions\nFROM fact_sales",
+      "columns": [
+        "rows_analysed",
+        "customers",
+        "invoices",
+        "purchase_occasions"
+      ],
+      "rows": [
+        [
+          397884,
+          4338,
+          18532,
+          18440
+        ]
+      ]
+    },
+    {
+      "id": "Q2",
+      "title": "Revenue reconciliation",
+      "sql": "SELECT\n    ROUND(SUM(Quantity * UnitPrice), 2) AS revenue_qty_x_price,\n    ROUND(SUM(Revenue), 2)              AS revenue_column\nFROM fact_sales",
+      "columns": [
+        "revenue_qty_x_price",
+        "revenue_column"
+      ],
+      "rows": [
+        [
+          8911407.9,
+          8911407.9
+        ]
+      ]
+    },
+    {
+      "id": "Q3",
+      "title": "Repeat purchase rate (two methods)",
+      "sql": "WITH cust AS (\n    SELECT\n        CustomerID,\n        COUNT(DISTINCT InvoiceNo)          AS invoice_count,\n        COUNT(DISTINCT InvoiceDate)        AS occasion_count\n    FROM fact_sales\n    GROUP BY CustomerID\n)\nSELECT\n    ROUND(100.0 * SUM(invoice_count  >= 2) / COUNT(*), 1) AS repeat_rate_invoices_pct,\n    ROUND(100.0 * SUM(occasion_count >= 2) / COUNT(*), 1) AS repeat_rate_occasions_pct,\n    COUNT(*) AS customers\nFROM cust",
+      "columns": [
+        "repeat_rate_invoices_pct",
+        "repeat_rate_occasions_pct",
+        "customers"
+      ],
+      "rows": [
+        [
+          65.6,
+          65.5,
+          4338
+        ]
+      ]
+    },
+    {
+      "id": "Q4",
+      "title": "Top-20% revenue concentration",
+      "sql": "WITH cust AS (\n    SELECT CustomerID, SUM(Revenue) AS cltv\n    FROM fact_sales\n    GROUP BY CustomerID\n), ranked AS (\n    SELECT cltv,\n           ROW_NUMBER() OVER (ORDER BY cltv DESC) AS rn,\n           COUNT(*)     OVER ()                   AS n\n    FROM cust\n)\nSELECT\n    (SELECT COUNT(*)  FROM ranked WHERE rn <= CAST(n * 0.2 AS INTEGER)) AS top20_customers,\n    ROUND(100.0 * (SELECT SUM(cltv) FROM ranked WHERE rn <= CAST(n * 0.2 AS INTEGER))\n                / (SELECT SUM(cltv) FROM ranked), 1)                    AS top20_share_pct",
+      "columns": [
+        "top20_customers",
+        "top20_share_pct"
+      ],
+      "rows": [
+        [
+          867,
+          74.6
+        ]
+      ]
+    },
+    {
+      "id": "Q5",
+      "title": "RFM segment distribution",
+      "sql": "SELECT RFM_Segment,\n       COUNT(*)                                        AS customers,\n       ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 1) AS pct\nFROM dim_customer\nGROUP BY RFM_Segment\nORDER BY customers DESC",
+      "columns": [
+        "RFM_Segment",
+        "customers",
+        "pct"
+      ],
+      "rows": [
+        [
+          "Lost",
+          1535,
+          35.4
+        ],
+        [
+          "Champions",
+          980,
+          22.6
+        ],
+        [
+          "Loyal",
+          946,
+          21.8
+        ],
+        [
+          "Potential Loyalists",
+          578,
+          13.3
+        ],
+        [
+          "At Risk",
+          299,
+          6.9
+        ]
+      ]
+    },
+    {
+      "id": "Q6",
+      "title": "Inactivity bands",
+      "sql": "SELECT\n    SUM(RecencyDays <= 60) AS active_60d,\n    SUM(RecencyDays > 90)  AS inactive_90d,\n    SUM(RecencyDays > 180) AS inactive_180d\nFROM dim_customer",
+      "columns": [
+        "active_60d",
+        "inactive_90d",
+        "inactive_180d"
+      ],
+      "rows": [
+        [
+          2425,
+          1441,
+          858
+        ]
+      ]
+    },
+    {
+      "id": "Q7",
+      "title": "Monthly non-return series",
+      "sql": "WITH monthly AS (SELECT DISTINCT CustomerID, MonthKey FROM fact_sales)\nSELECT\n    a.MonthKey,\n    COUNT(*)                                                                    AS active_in_m,\n    ROUND(100.0 * SUM(CASE WHEN n.CustomerID IS NULL THEN 1 ELSE 0 END)\n                / COUNT(*), 1)                                                  AS non_return_pct\nFROM (SELECT DISTINCT MonthKey FROM monthly WHERE MonthKey < 24143) months\nJOIN monthly a  ON a.MonthKey = months.MonthKey\nLEFT JOIN monthly n ON n.CustomerID = a.CustomerID AND n.MonthKey = a.MonthKey + 1\nGROUP BY a.MonthKey\nORDER BY a.MonthKey",
+      "columns": [
+        "MonthKey",
+        "active_in_m",
+        "non_return_pct"
+      ],
+      "rows": [
+        [
+          24132,
+          885,
+          63.4
+        ],
+        [
+          24133,
+          741,
+          64.6
+        ],
+        [
+          24134,
+          758,
+          61.7
+        ],
+        [
+          24135,
+          974,
+          68.8
+        ],
+        [
+          24136,
+          856,
+          57.0
+        ],
+        [
+          24137,
+          1056,
+          61.2
+        ],
+        [
+          24138,
+          991,
+          63.2
+        ],
+        [
+          24139,
+          949,
+          59.1
+        ],
+        [
+          24140,
+          935,
+          54.5
+        ],
+        [
+          24141,
+          1266,
+          61.4
+        ],
+        [
+          24142,
+          1364,
+          54.4
+        ]
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "check": "Rows analysed match 397,884",
+      "expected": 397884,
+      "sql": 397884,
+      "pass": true
+    },
+    {
+      "check": "Customers match 4,338",
+      "expected": 4338,
+      "sql": 4338,
+      "pass": true
+    },
+    {
+      "check": "Invoices match 18,532",
+      "expected": 18532,
+      "sql": 18532,
+      "pass": true
+    },
+    {
+      "check": "Occasions match 18,440",
+      "expected": 18440,
+      "sql": 18440,
+      "pass": true
+    },
+    {
+      "check": "Revenue matches GBP 8,911,407.90",
+      "expected": 8911407.9,
+      "sql": 8911407.9,
+      "pass": true
+    },
+    {
+      "check": "Qty x price == revenue column",
+      "expected": 8911407.9,
+      "sql": 8911407.9,
+      "pass": true
+    },
+    {
+      "check": "Invoice repeat rate matches 65.6",
+      "expected": 65.6,
+      "sql": 65.6,
+      "pass": true
+    },
+    {
+      "check": "Occasion repeat rate matches 65.5",
+      "expected": 65.5,
+      "sql": 65.5,
+      "pass": true
+    },
+    {
+      "check": "Top-20% customers = 867",
+      "expected": 867,
+      "sql": 867,
+      "pass": true
+    },
+    {
+      "check": "Top-20% share = 74.6%",
+      "expected": 74.6,
+      "sql": 74.6,
+      "pass": true
+    },
+    {
+      "check": "Inactive 90d = 1,441",
+      "expected": 1441,
+      "sql": 1441,
+      "pass": true
+    },
+    {
+      "check": "Inactive 180d = 858",
+      "expected": 858,
+      "sql": 858,
+      "pass": true
+    },
+    {
+      "check": "Dec non-return = 63.4%",
+      "expected": 63.4,
+      "sql": 63.4,
+      "pass": true
+    },
+    {
+      "check": "Mar non-return = 68.8% (peak)",
+      "expected": 68.8,
+      "sql": 68.8,
+      "pass": true
+    },
+    {
+      "check": "Oct non-return = 54.4%",
+      "expected": 54.4,
+      "sql": 54.4,
+      "pass": true
+    },
+    {
+      "check": "Champions = 980",
+      "expected": 980,
+      "sql": 980,
+      "pass": true
+    },
+    {
+      "check": "Lost = 1,535",
+      "expected": 1535,
+      "sql": 1535,
+      "pass": true
+    }
+  ],
+  "allPassed": true
+}

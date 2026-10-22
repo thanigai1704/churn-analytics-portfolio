@@ -1,4 +1,13 @@
 import computed from './computed.json'
+import computedSql from './sqlResults.json'
+
+interface SqlResultsFile {
+  engine: string
+  sourceFile: string
+  queries: { id: string; title: string; sql: string; columns: string[]; rows: (string | number)[][] }[]
+  checks: { check: string; expected: number; sql: number | null; pass: boolean }[]
+  allPassed: boolean
+}
 
 export type SegmentKey =
   | 'champions'
@@ -25,9 +34,14 @@ export const churnSummary = computed.churnSummary
 export const m1Retention = computed.metrics.m1Retention
 export const m1Dropoff = computed.metrics.m1Dropoff
 
-export const recoverableLtv = Math.round(
-  computed.metrics.totalCustomers * 0.05 * computed.metrics.avgLtv,
-)
+export const inactivity = computed.inactivity
+export const metricNotes = computed.metricDefinitionNotes
+export const sqlResults = computedSql as SqlResultsFile
+export const orderContext = {
+  invoiceInstances: computed.metrics.invoiceInstances,
+  purchaseOccasions: computed.metrics.purchaseOccasions,
+  repeatRateInvoices: computed.metrics.repeatRateInvoices,
+}
 
 const fmtInt = (n: number) => Math.round(n).toLocaleString('en-US')
 const gbp = (n: number) => `£${fmtInt(n)}`
@@ -50,7 +64,7 @@ export const executiveMetrics: KpiMetric[] = [
     icon: 'retention',
   },
   {
-    label: 'Monthly Churn',
+    label: 'Monthly Non-Return',
     value: `${computed.metrics.churnRate}%`,
     delta: `${Math.abs(computed.deltas.churn.value)}pts`,
     deltaNote: computed.deltas.churn.note,
@@ -58,7 +72,7 @@ export const executiveMetrics: KpiMetric[] = [
     icon: 'churn',
   },
   {
-    label: 'Average LTV',
+    label: 'Avg Customer Value',
     value: gbp(computed.metrics.avgLtv),
     delta: `${computed.deltas.ltv.value}×`,
     deltaNote: computed.deltas.ltv.note,
@@ -156,27 +170,27 @@ export const journeyFlow = computed.journey.map((stage, i) => ({
 
 export const recommendations = [
   {
-    title: 'Conquer the Month-1 Cliff',
-    body: '34.5% of buyers never return. Launch a post-purchase series with a second-purchase incentive inside the first 30 days — before the window closes.',
-    impact: '+5pts M1 retention',
+    title: 'Attack the Month-1 Cliff',
+    body: '34.5% of buyers never place a second order. Launch a post-purchase series with a second-purchase incentive inside the first 30 days — before the window closes.',
+    impact: 'Target: +5pts M1 retention',
     color: '#00E5FF',
   },
   {
     title: 'Champion a Champion Program',
-    body: 'Just 980 Champions (22.6% of customers) carry the base at £6,144 average LTV. Turn them into advocates with early access and referral rewards.',
-    impact: '£6.1K avg LTV',
+    body: '980 Champions (22.6% of customers) carry the base at £6,144 average observed value. Turn them into advocates with early access and referral rewards.',
+    impact: 'Measured: £6.1K avg value',
     color: '#8B5CF6',
   },
   {
     title: 'Re-activate At-Risk Customers',
-    body: '299 at-risk and 1,535 lost customers still hold real spend history. Time-boxed win-back flows pull ~35% of them back after a 90+ day gap.',
-    impact: '35% win-back',
+    body: '299 at-risk and 1,535 lost customers still hold real spend history. Historically 35.1% of the full base has returned after a 90+ day silence at least once — evidence that a 90-day win-back window is reachable, though campaign response should be measured, not assumed.',
+    impact: 'Measured: 35.1% historic return rate',
     color: '#10B981',
   },
   {
     title: 'Stabilize the Funnel Top',
-    body: 'H2 acquisition fell 40.4% vs H1 while churn trended down to 54.4%. Rebalance spend toward the funnel top to sustain the base.',
-    impact: '-9pts churn YTD',
+    body: 'H2 acquisition fell 40.4% vs H1 while the monthly non-return rate trended down to 54.4%. Rebalance spend toward the funnel top to sustain the base.',
+    impact: 'Measured: 9pts non-return improvement YTD',
     color: '#F59E0B',
   },
 ]
@@ -212,7 +226,7 @@ export const techStack = [
   'Python / Pandas',
   'Cohort Analysis',
   'RFM Segmentation',
-  'SQL',
-  'Statistical Modeling',
+  'SQL Validation (SQLite)',
+  'Rule-Based Risk Scoring',
   'Power BI',
 ]
